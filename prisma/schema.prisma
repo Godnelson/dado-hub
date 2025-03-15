@@ -25,6 +25,8 @@ model Project {
   hasLiveExample  Boolean @default(false)
   liveExampleLink String?
   banner          String?
+  hasAOnlineRepo  Boolean
+  onlineRepoLink  String
   owner           User    @relation(fields: [ownerId], references: [id])
   ownerId         Int
 
