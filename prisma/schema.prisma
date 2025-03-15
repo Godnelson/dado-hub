@@ -10,38 +10,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id Int @id @default(autoincrement())
-  name String
-  email String @unique
+model User {
+  id       Int       @id @default(autoincrement())
+  name     String
+  email    String    @unique
   password String
   projects Project[]
 }
 
-model Project{
-  id Int @id @default(autoincrement())
-  name String
-  description String?
-  hasLiveExample Boolean @default(false)
+model Project {
+  id              Int     @id @default(autoincrement())
+  name            String
+  description     String?
+  hasLiveExample  Boolean @default(false)
   liveExampleLink String?
-  banner String?
-  owner User @relation(fields: [ownerId], references: [id])
-  ownerId Int
+  banner          String?
+  owner           User    @relation(fields: [ownerId], references: [id])
+  ownerId         Int
 
   tags TagAssignedForProjects[]
 }
 
-model Tag{
-  id Int @id @default(autoincrement())
+model Tag {
+  id   Int    @id @default(autoincrement())
   name String
 
   projects TagAssignedForProjects[]
 }
 
-model TagAssignedForProjects{
-  project Project @relation(fields: [projectId], references: [id])
+model TagAssignedForProjects {
+  project   Project @relation(fields: [projectId], references: [id])
   projectId Int
-  tag Tag @relation(fields: [tagId], references: [id])
-  tagId Int
+  tag       Tag     @relation(fields: [tagId], references: [id])
+  tagId     Int
+
   @@id([projectId, tagId])
 }
