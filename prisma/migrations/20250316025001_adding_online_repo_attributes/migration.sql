@@ -1,10 +1,3 @@
-/*
-  Warnings:
-
-  - Added the required column `hasAOnlineRepo` to the `Project` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `onlineRepoLink` to the `Project` table without a default value. This is not possible if the table is not empty.
-
-*/
 -- RedefineTables
 PRAGMA defer_foreign_keys=ON;
 PRAGMA foreign_keys=OFF;
@@ -15,8 +8,8 @@ CREATE TABLE "new_Project" (
     "hasLiveExample" BOOLEAN NOT NULL DEFAULT false,
     "liveExampleLink" TEXT,
     "banner" TEXT,
-    "hasAOnlineRepo" BOOLEAN NOT NULL,
-    "onlineRepoLink" TEXT NOT NULL,
+    "hasAOnlineRepo" BOOLEAN NOT NULL DEFAULT false,
+    "onlineRepoLink" TEXT,
     "ownerId" INTEGER NOT NULL,
     CONSTRAINT "Project_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
