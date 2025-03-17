@@ -1,7 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import { Router } from "express";
+import multer from "multer"
+import { uploadFile } from "../helpers/uploadFile";
 
 export const projectRoutes = Router()
+
+const upload = multer()
 
 const prisma = new PrismaClient()
 
@@ -108,5 +112,17 @@ projectRoutes.delete("/unbind_tag/:id/:tagId", async (req, res) => {
     catch (e) {
         console.log(e)
         res.status(400).send()
+    }
+})
+
+//UPLOAD BANNER
+
+projectRoutes.post("/upload_banner", upload.single("banner") , async (req, res) =>{
+    try{
+        if(!req.file) throw Error("There's no file uploaded with key 'banner'")
+        await uploadFile(req.file?.buffer, req.file?.originalname)
+        res.status(200).send()
+    }catch(e){
+        res.status(400).send(e)
     }
 })
