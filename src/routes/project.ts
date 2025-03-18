@@ -120,8 +120,11 @@ projectRoutes.delete("/unbind_tag/:id/:tagId", async (req, res) => {
 projectRoutes.post("/upload_banner", upload.single("banner") , async (req, res) =>{
     try{
         if(!req.file) throw Error("There's no file uploaded with key 'banner'")
-        await uploadFile(req.file?.buffer, req.file?.originalname)
-        res.status(200).send()
+        if(!req.body.projectId) throw Error("There's no projectId on request body")
+        if(req.file.mimetype.split("/")[0] != "image") throw Error("'banner' is not a image")
+        const filePath = await uploadFile(req.file?.buffer, `/banners/${req.body.projectId}_banner.${req.file.mimetype.split("/")[1]}`)
+        const project = await prisma.project.update({where:{id: Number(req.body.projectId)}, data:{banner: filePath}})
+        res.status(200).json(project)
     }catch(e){
         res.status(400).send(e)
     }
