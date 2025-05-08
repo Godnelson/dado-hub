@@ -5,7 +5,9 @@ import { router } from './routes';
 const app = express()
 app.use(express.json())
 app.use(express.static("storage"))
+
 app.use("/client", express.static("client"))
+
 const prisma = new PrismaClient()
 
 app.use("/", router)
